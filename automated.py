@@ -30,11 +30,11 @@ cols_to_drop = [
     "Latitude",
     "Longitude",
     "occured",
+    "duration"
 ]
 df = df.drop(columns=cols_to_drop, errors="ignore")
 rain_threshold = df["Rainfall"].quantile(0.90)
 elev_threshold = df["Elevation"].quantile(0.25)
-
 rain_threshold = df["Rainfall"].quantile(0.75) 
 elev_threshold = df["Elevation"].quantile(0.40) 
 
@@ -43,35 +43,26 @@ flood_conditions = (
     | (df["Elevation"] <= elev_threshold) 
 )
 df["y"] = 0
-df.loc[flood_conditions, "y"] = 1
-X = df.drop(columns=["y"])
+df.loc[flood_conditions, "y"]=1
+X=df.drop(columns=["y"])
 y = df["y"]
 print(y.value_counts())
-cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+cv = StratifiedKFold(n_splits=5,shuffle=True, random_state=42)
 pipeline = Pipeline([
     ("scaler", StandardScaler()),
-    (
-        "classifier",
-        RandomForestClassifier(n_estimators=100, random_state=42),
-    ),
+    ("classifier",RandomForestClassifier(n_estimators=100, random_state=42),
+),
 ])
-_pipeline = CalibratedClassifierCV(
-    estimator=pipeline, 
-    method="isotonic", 
-    cv=5  
-)
+_pipeline = CalibratedClassifierCV(estimator=pipeline,
+                                    method="isotonic",  cv=5  )
 scoring = ["accuracy", "precision", "recall", "f1"]
 cv_results = cross_validate(_pipeline, X, y, cv=cv, scoring=scoring, return_train_score=False)
 
-print(f"Mean Accuracy: {cv_results['test_accuracy'].mean():.4f} (± {cv_results['test_accuracy'].std():.4f})")
+print(f"Mean Accuracy: {cv_results['test_accuracy'].mean()} ({cv_results['test_accuracy'].std():.4f})")
+print(f"Mean Precision: {cv_results['test_precision'].mean()} ({cv_results['test_precision'].std():.4f})")
 print(
-    f"Mean Precision: {cv_results['test_precision'].mean():.4f} (± {cv_results['test_precision'].std():.4f})"
+    f"mean recall:{cv_results['test_recall'].mean()} ({cv_results['test_recall'].std()})"
 )
-print(
-    f"Mean Recall:    {cv_results['test_recall'].mean():.4f} (± {cv_results['test_recall'].std():.4f})"
-)
-print(
-    f"Mean F1-Score:  {cv_results['test_f1'].mean():.4f} (± {cv_results['test_f1'].std():.4f})"
-)
+print(f"mean f1:{cv_results['test_f1'].mean()} ({cv_results['test_f1'].std()})")
 joblib.dump(_pipeline, "risk_detector.pkl")
 print(X.head(1))
