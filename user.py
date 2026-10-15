@@ -14,7 +14,11 @@ class RiskDetector:
         self.river_long=river_long
 
     def distance(self, lat1,lat2,long1,long2):
-        pass #runn the haversine formula
+        lat_diff = lat2-lat1
+      longdiff=long2-long1
+      a=math.sin(lat_diff/2)**2+math.cos(lat1)*math.cos(lat2)*math.sin(longdiff/2)**2
+      c=2*math.atan2(math.sqrt(a),math.sqrt(1-a))
+      return c*6371
 
     def get_elevation(self):
         #one key detail to remember for now i have trained with the dataset elevation
