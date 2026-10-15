@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .font-nepali {
+    font-family: 'Mukta', 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+@keyframes flowCurrent {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -40; }
+}
+
+@keyframes waterPulse {
+  0%, 100% { opacity: 0.85; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+@keyframes hazardStripes {
+  0% { background-position: 0 0; }
+  100% { background-position: 30px 30px; }
+}
+
+.river-current {
+  stroke-dasharray: 8 6;
+  animation: flowCurrent 2s linear infinite;
+}
+
+.river-current-slow {
+  stroke-dasharray: 10 10;
+  animation: flowCurrent 4s linear infinite;
+}
+
+.water-pulse {
+  animation: waterPulse 3s ease-in-out infinite;
+}
+
+.hazard-stripe-bg {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(239, 68, 68, 0.25),
+    rgba(239, 68, 68, 0.25) 10px,
+    rgba(185, 28, 28, 0.4) 10px,
+    rgba(185, 28, 28, 0.4) 20px
+  );
+  background-size: 28px 28px;
+  animation: hazardStripes 2s linear infinite;
+}
+
+/* Custom Scrollbar for sleek telemetry tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.8);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 1);
+}

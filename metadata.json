@@ -1,0 +1,6 @@
+{
+  "name": "Nepal Flood AI - Early Warning & Evacuation System",
+  "description": "AI-powered flood early warning, dynamic evacuation routing, Google Maps shelter navigation, interactive flood visualizer, obstacle resolution, and citizen alert broadcast for Nepal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
